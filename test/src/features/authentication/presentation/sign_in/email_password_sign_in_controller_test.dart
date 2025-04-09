@@ -13,37 +13,41 @@ void main() {
   const testPass = '1234';
   group('EmailPasswordSignInController', () {
     group('submit', () {
-      test('''
-Given form type is sign in
-when signInWitheEmailAndPassword successes
-then return true
-and state AsyncData
-''', () async {
-        final repo = MockAuthRepository();
-        final controller = EmailPasswordSignInController(
-            authRepository: repo, formType: EmailPasswordSignInFormType.signIn);
-        when(() => repo.signInWitheEmailAndPassword(testEmail, testPass))
-            .thenAnswer((_) => Future.value());
-        expectLater(
-            controller.stream,
-            emitsInOrder([
-              EmailPasswordSignInState(
-                  formType: EmailPasswordSignInFormType.signIn,
-                  value: AsyncLoading<void>()),
-              EmailPasswordSignInState(
-                  formType: EmailPasswordSignInFormType.signIn,
-                  value: AsyncData<void>(null))
-            ]));
-        final result = await controller.submit(testEmail, testPass);
-        expect(result, true);
-      }, );
+      test(
+        '''
+      Given form type is sign in
+      when signInWitheEmailAndPassword successes
+      then return true
+      and state AsyncData
+      ''',
+        () async {
+          final repo = MockAuthRepository();
+          final controller = EmailPasswordSignInController(
+              authRepository: repo,
+              formType: EmailPasswordSignInFormType.signIn);
+          when(() => repo.signInWitheEmailAndPassword(testEmail, testPass))
+              .thenAnswer((_) => Future.value());
+          expectLater(
+              controller.stream,
+              emitsInOrder([
+                EmailPasswordSignInState(
+                    formType: EmailPasswordSignInFormType.signIn,
+                    value: AsyncLoading<void>()),
+                EmailPasswordSignInState(
+                    formType: EmailPasswordSignInFormType.signIn,
+                    value: AsyncData<void>(null))
+              ]));
+          final result = await controller.submit(testEmail, testPass);
+          expect(result, true);
+        },
+      );
 
       test('''
-Given form type is sign in
-when signInWitheEmailAndPassword fail
-then return false
-and state AsyncError
-''', () async {
+      Given form type is sign in
+      when signInWitheEmailAndPassword fail
+      then return false
+      and state AsyncError
+      ''', () async {
         final repo = MockAuthRepository();
         final controller = EmailPasswordSignInController(
             formType: EmailPasswordSignInFormType.signIn, authRepository: repo);
@@ -67,61 +71,66 @@ and state AsyncError
         expect(result, false);
       });
 
-      test('''
-Given form type is register
-when createWitheEmailAndPassword successes
-then return true
-and state AsyncData
-''', () async {
-        final repo = MockAuthRepository();
-        final controller = EmailPasswordSignInController(
-            formType: EmailPasswordSignInFormType.register,
-            authRepository: repo);
-        when(() => repo.createWitheEmailAndPassword(testEmail, testPass))
-            .thenAnswer((_) => Future.value());
-        expectLater(
-            controller.stream,
-            emitsInOrder([
-              EmailPasswordSignInState(
-                  formType: EmailPasswordSignInFormType.register,
-                  value: AsyncLoading<void>()),
-              EmailPasswordSignInState(
-                  formType: EmailPasswordSignInFormType.register,
-                  value: AsyncData<void>(null))
-            ]));
-        final result = await controller.submit(testEmail, testPass);
-        expect(result, true);
-      }, );
-      test('''
-Given form type is register
-when createWitheEmailAndPassword fail
-then return false
-and state AsyncError
-''', () async {
-        final repo = MockAuthRepository();
-        final controller = EmailPasswordSignInController(
-            formType: EmailPasswordSignInFormType.register,
-            authRepository: repo);
-        final exception = Exception('connection fail');
-        when(() => repo.createWitheEmailAndPassword(testEmail, testPass))
-            .thenThrow(exception);
-        expectLater(
-            controller.stream,
-            emitsInOrder([
-              EmailPasswordSignInState(
-                  formType: EmailPasswordSignInFormType.register,
-                  value: AsyncLoading<void>()),
-              predicate<EmailPasswordSignInState>((state) {
-                expect(state.formType, EmailPasswordSignInFormType.register);
-                expect(state.value.hasError, true);
+      test(
+        '''
+      Given form type is register
+      when createWitheEmailAndPassword successes
+      then return true
+      and state AsyncData
+      ''',
+        () async {
+          final repo = MockAuthRepository();
+          final controller = EmailPasswordSignInController(
+              formType: EmailPasswordSignInFormType.register,
+              authRepository: repo);
+          when(() => repo.createWitheEmailAndPassword(testEmail, testPass))
+              .thenAnswer((_) => Future.value());
+          expectLater(
+              controller.stream,
+              emitsInOrder([
+                EmailPasswordSignInState(
+                    formType: EmailPasswordSignInFormType.register,
+                    value: AsyncLoading<void>()),
+                EmailPasswordSignInState(
+                    formType: EmailPasswordSignInFormType.register,
+                    value: AsyncData<void>(null))
+              ]));
+          final result = await controller.submit(testEmail, testPass);
+          expect(result, true);
+        },
+      );
+      test(
+        '''
+      Given form type is register
+      when createWitheEmailAndPassword fail
+      then return false
+      and state AsyncError
+      ''',
+        () async {
+          final repo = MockAuthRepository();
+          final controller = EmailPasswordSignInController(
+              formType: EmailPasswordSignInFormType.register,
+              authRepository: repo);
+          final exception = Exception('connection fail');
+          when(() => repo.createWitheEmailAndPassword(testEmail, testPass))
+              .thenThrow(exception);
+          expectLater(
+              controller.stream,
+              emitsInOrder([
+                EmailPasswordSignInState(
+                    formType: EmailPasswordSignInFormType.register,
+                    value: AsyncLoading<void>()),
+                predicate<EmailPasswordSignInState>((state) {
+                  expect(state.formType, EmailPasswordSignInFormType.register);
+                  expect(state.value.hasError, true);
 
-                return true;
-              })
-            ]));
-        await controller.submit(testEmail, testPass);
-      }, );
+                  return true;
+                })
+              ]));
+          await controller.submit(testEmail, testPass);
+        },
+      );
     });
-
     group('update form type', () {
       test('switch to register state while in signIn', () {
         final authRepo = MockAuthRepository();
