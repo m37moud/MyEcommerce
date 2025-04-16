@@ -5,6 +5,7 @@ class Assets {
   static const String accountAccountScreen = 'lib/src/features/authentication/presentation/account/account_screen.dart';
   static const String accountAccountScreenController = 'lib/src/features/authentication/presentation/account/account_screen_controller.dart';
   static const String addToCartAddToCartWidget = 'lib/src/features/cart/presentation/add_to_cart/add_to_cart_widget.dart';
+  static const String applicationCartService = 'lib/src/features/cart/application/cart_service.dart';
   static const String assetsAppIcon = 'assets/app-icon.png';
   static const String assetsAppIconBackground = 'assets/app-icon-background.png';
   static const String assetsAppIconForeground = 'assets/app-icon-foreground.png';
@@ -38,13 +39,17 @@ class Assets {
   static const String domainProduct = 'lib/src/features/products/domain/product.dart';
   static const String domainPurchase = 'lib/src/features/orders/domain/purchase.dart';
   static const String domainReview = 'lib/src/features/reviews/domain/review.dart';
-  static const String genAA = 'lib/gen_a/A.dart';
+  static const String fontsLICENSE = 'assets/fonts/LICENSE.txt';
+  static const String fontsRobotoRegular = 'assets/fonts/Roboto-Regular.ttf';
   static const String generatedAssets = 'lib/generated/assets.dart';
   static const String homeAppBarHomeAppBar = 'lib/src/features/products/presentation/home_app_bar/home_app_bar.dart';
   static const String homeAppBarMoreMenuButton = 'lib/src/features/products/presentation/home_app_bar/more_menu_button.dart';
   static const String homeAppBarShoppingCartIcon = 'lib/src/features/products/presentation/home_app_bar/shopping_cart_icon.dart';
   static const String leaveReviewScreenLeaveReviewScreen = 'lib/src/features/reviews/presentation/leave_review_screen/leave_review_screen.dart';
   static const String libMain = 'lib/main.dart';
+  static const String localFakeLocalCartRepository = 'lib/src/features/cart/data/local/fake_local_cart_repository.dart';
+  static const String localLocalCartRepository = 'lib/src/features/cart/data/local/local_cart_repository.dart';
+  static const String localSembastCartRepository = 'lib/src/features/cart/data/local/sembast_cart_repository.dart';
   static const String localizationAppEn = 'lib/src/localization/app_en.arb';
   static const String localizationStringHardcoded = 'lib/src/localization/string_hardcoded.dart';
   static const String ordersListOrderCard = 'lib/src/features/orders/presentation/orders_list/order_card.dart';
@@ -78,13 +83,15 @@ class Assets {
   static const String productsSaltPepperLemon = 'assets/products/salt-pepper-lemon.jpg';
   static const String productsSaltPepperOlives = 'assets/products/salt-pepper-olives.jpg';
   static const String productsSnacksPlate = 'assets/products/snacks-plate.jpg';
-  static const String resAssetsRes = 'lib/res/assets_res.dart';
-  static const String resLibRes = 'lib/res/lib_res.dart';
+  static const String remoteFakeRemoteCartRepository = 'lib/src/features/cart/data/remote/fake_remote_cart_repository.dart';
+  static const String remoteRemoteCartRepository = 'lib/src/features/cart/data/remote/remote_cart_repository.dart';
   static const String routingAppRouter = 'lib/src/routing/app_router.dart';
+  static const String routingGoRouterRefreshStream = 'lib/src/routing/go_router_refresh_stream.dart';
   static const String routingNotFoundScreen = 'lib/src/routing/not_found_screen.dart';
   static const String shoppingCartShoppingCartItem = 'lib/src/features/cart/presentation/shopping_cart/shopping_cart_item.dart';
   static const String shoppingCartShoppingCartItemsBuilder = 'lib/src/features/cart/presentation/shopping_cart/shopping_cart_items_builder.dart';
   static const String shoppingCartShoppingCartScreen = 'lib/src/features/cart/presentation/shopping_cart/shopping_cart_screen.dart';
+  static const String signInEmailPasswordSignInController = 'lib/src/features/authentication/presentation/sign_in/email_password_sign_in_controller.dart';
   static const String signInEmailPasswordSignInScreen = 'lib/src/features/authentication/presentation/sign_in/email_password_sign_in_screen.dart';
   static const String signInEmailPasswordSignInState = 'lib/src/features/authentication/presentation/sign_in/email_password_sign_in_state.dart';
   static const String signInStringValidators = 'lib/src/features/authentication/presentation/sign_in/string_validators.dart';
@@ -92,6 +99,7 @@ class Assets {
   static const String utilsAsyncValueUi = 'lib/src/utils/async_value_ui.dart';
   static const String utilsCurrencyFormatter = 'lib/src/utils/currency_formatter.dart';
   static const String utilsDateFormatter = 'lib/src/utils/date_formatter.dart';
+  static const String utilsDelay = 'lib/src/utils/delay.dart';
   static const String utilsInMemoryStore = 'lib/src/utils/in_memory_store.dart';
 
 }

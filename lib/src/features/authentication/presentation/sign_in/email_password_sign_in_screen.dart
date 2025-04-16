@@ -28,6 +28,10 @@ class EmailPasswordSignInScreen extends StatelessWidget {
       appBar: AppBar(title: Text('Sign In'.hardcoded)),
       body: EmailPasswordSignInContents(
         formType: formType,
+        onSignedIn: () {
+          debugPrint('onSignedIn pressed');
+          Navigator.of(context).pop();
+        },
       ),
     );
   }
@@ -118,8 +122,8 @@ class _EmailPasswordSignInContentsState
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(emailPasswordProvider(widget.formType)
-    .select((state)=> state.value),
+    ref.listen(
+        emailPasswordProvider(widget.formType).select((state) => state.value),
         (_, state) => state.showMessageDialogOnError(context));
     final state = ref.watch(emailPasswordProvider(widget.formType));
     return ResponsiveScrollableCard(

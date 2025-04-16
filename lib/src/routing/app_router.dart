@@ -8,7 +8,6 @@ import 'package:ecommerce_app/src/features/orders/presentation/orders_list/order
 import 'package:ecommerce_app/src/features/products/presentation/product_screen/product_screen.dart';
 import 'package:ecommerce_app/src/features/products/presentation/products_list/products_list_screen.dart';
 import 'package:ecommerce_app/src/features/reviews/presentation/leave_review_screen/leave_review_screen.dart';
-import 'package:ecommerce_app/src/routing/go_router_refresh_stream.dart';
 import 'package:ecommerce_app/src/routing/not_found_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,22 +28,29 @@ final goRouterProvider = Provider<GoRouter>((ref) {
   final authRepo = ref.watch(authRepositoryProvider);
   return GoRouter(
     initialLocation: '/',
-    debugLogDiagnostics: false,
+    debugLogDiagnostics: true,
     redirect: (context, state) {
-      var isLoggedIn = authRepo.currentUser != null;
+      final isLoggedIn = authRepo.currentUser != null;
+   debugPrint(
+            'isLoggedIn $isLoggedIn matchedLocation is ${state.matchedLocation}');
+
       if (isLoggedIn) {
+     
         if (state.matchedLocation == '/signIn') {
+          debugPrint('isLoggedIn $isLoggedIn redirect to home');
+
           return '/';
         }
       } else {
         if (state.matchedLocation == '/account' ||
             state.matchedLocation == '/orders') {
+          debugPrint('isLoggedIn $isLoggedIn redirect to home');
           return '/';
         }
       }
       return null;
     },
-    refreshListenable: GoRouterRefreshStream(authRepo.authStateChanges()),
+  // refreshListenable: GoRouterRefreshStream(authRepo.authStateChanges()),
     routes: [
       GoRoute(
         path: '/',

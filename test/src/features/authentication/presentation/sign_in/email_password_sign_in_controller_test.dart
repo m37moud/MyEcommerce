@@ -1,5 +1,4 @@
 @Timeout(Duration(milliseconds: 500))
-import 'package:ecommerce_app/src/features/authentication/data/fake_auth_repository.dart';
 import 'package:ecommerce_app/src/features/authentication/presentation/sign_in/email_password_sign_in_controller.dart';
 import 'package:ecommerce_app/src/features/authentication/presentation/sign_in/email_password_sign_in_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,7 +24,7 @@ void main() {
           final controller = EmailPasswordSignInController(
               authRepository: repo,
               formType: EmailPasswordSignInFormType.signIn);
-          when(() => repo.signInWitheEmailAndPassword(testEmail, testPass))
+          when(() => repo.signInWithEmailAndPassword(testEmail, testPass))
               .thenAnswer((_) => Future.value());
           expectLater(
               controller.stream,
@@ -52,7 +51,7 @@ void main() {
         final controller = EmailPasswordSignInController(
             formType: EmailPasswordSignInFormType.signIn, authRepository: repo);
         final exception = Exception('connection fail');
-        when(() => repo.signInWitheEmailAndPassword(testEmail, testPass))
+        when(() => repo.signInWithEmailAndPassword(testEmail, testPass))
             .thenThrow(exception);
 
         expectLater(
@@ -83,7 +82,7 @@ void main() {
           final controller = EmailPasswordSignInController(
               formType: EmailPasswordSignInFormType.register,
               authRepository: repo);
-          when(() => repo.createWitheEmailAndPassword(testEmail, testPass))
+          when(() => repo.createUserWithEmailAndPassword(testEmail, testPass))
               .thenAnswer((_) => Future.value());
           expectLater(
               controller.stream,
@@ -112,7 +111,7 @@ void main() {
               formType: EmailPasswordSignInFormType.register,
               authRepository: repo);
           final exception = Exception('connection fail');
-          when(() => repo.createWitheEmailAndPassword(testEmail, testPass))
+          when(() => repo.createUserWithEmailAndPassword(testEmail, testPass))
               .thenThrow(exception);
           expectLater(
               controller.stream,

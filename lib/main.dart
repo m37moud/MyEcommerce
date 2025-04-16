@@ -1,12 +1,12 @@
 import 'dart:ui';
 
 import 'package:ecommerce_app/src/app.dart';
+import 'package:ecommerce_app/src/features/cart/data/local/local_cart_repository.dart';
+import 'package:ecommerce_app/src/features/cart/data/local/sembast_cart_repository.dart';
 import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
-
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +16,10 @@ void main() async {
   // * https://docs.flutter.dev/testing/errors
   registerErrorHandlers();
   // * Entry point of the app
-  runApp(const ProviderScope(child: MyApp()));
+  final localDatabase = await SembastCartRepository.makeItDefault();
+  runApp(ProviderScope(
+      overrides: [localCartRepositoryProvider.overrideWithValue(localDatabase)],
+      child: MyApp()));
 }
 
 void registerErrorHandlers() {

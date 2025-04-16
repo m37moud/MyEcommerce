@@ -19,7 +19,7 @@ void main() {
     test('currentUser is not null after sign in', () async {
       final repo = createAuthRepo();
       // tearDown(repo.dispose);
-      await repo.signInWitheEmailAndPassword(testEmail, testPass);
+      await repo.signInWithEmailAndPassword(testEmail, testPass);
       expect(repo.currentUser, testUser);
       expect(repo.authStateChanges(), emits(testUser));
     });
@@ -27,7 +27,7 @@ void main() {
     test('currentUser is not null after regeneration', () async {
       final repo = createAuthRepo();
       // tearDown(repo.dispose);
-      await repo.createWitheEmailAndPassword(testEmail, testPass);
+      await repo.createUserWithEmailAndPassword(testEmail, testPass);
       expect(repo.currentUser, testUser);
       expect(repo.authStateChanges(), emits(testUser));
     });
@@ -35,7 +35,7 @@ void main() {
     test('currentUser is null after sign out', () async {
       final repo = createAuthRepo();
       // tearDown(repo.dispose);
-      await repo.signInWitheEmailAndPassword(testEmail, testPass);
+      await repo.signInWithEmailAndPassword(testEmail, testPass);
       expect(repo.currentUser, testUser);
       expect(repo.authStateChanges(), emits(testUser));
       await repo.signOut();
