@@ -13,7 +13,7 @@ void main() async {
   // turn off the # in the URLs on the web
   usePathUrlStrategy();
   // * Register error handlers. For more info, see:
-  // * https://docs.flutter.dev/testing/errors
+  // * https://docs.flutter.dev/testing/errors 
   registerErrorHandlers();
   // * Entry point of the app
   final localDatabase = await SembastCartRepository.makeItDefault();
