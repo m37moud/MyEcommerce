@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:math';
+
 import 'package:ecommerce_app/src/features/authentication/data/fake_auth_repository.dart';
 import 'package:ecommerce_app/src/features/cart/data/local/local_cart_repository.dart';
 import 'package:ecommerce_app/src/features/cart/data/remote/remote_cart_repository.dart';
@@ -84,11 +86,22 @@ final cartTotalProvider = Provider.autoDispose<double>((ref) {
   if (cartItems.items.isNotEmpty && productList.isNotEmpty) {
     var total = 0.0;
     for (var item in cartItems.items.entries) {
-      final p = productList.firstWhere((product) => item.key == product.id);
-      total += p.price * item.value;
+      final tempProduct =
+          productList.firstWhere((product) => item.key == product.id);
+      total += tempProduct.price * item.value;
     }
     return total;
   } else {
     return 0.0;
+  }
+});
+final itemAvailableQuantityProvider =
+    Provider.autoDispose.family<int, Product>((ref, product) {
+  final cart = ref.watch(cartStreamProvider).value;
+  if (cart != null) {
+    final quantity = cart.items[product.id] ?? 0;
+    return max(0, product.availableQuantity - quantity);
+  } else {
+    return product.availableQuantity;
   }
 });

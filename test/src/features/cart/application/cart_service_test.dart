@@ -11,19 +11,22 @@ import 'package:mocktail/mocktail.dart';
 
 import '../../../mock.dart';
 
+
 void main() {
+  setUpAll(() {
+    registerFallbackValue(const Cart());
+  });
   const testUser = AppUser(uid: 'abc');
+
   late MockAuthRepository authRepository;
   late MockRemoteCartRepository remoteCartRepository;
   late MockLocalCartRepository localCartRepository;
-  setUpAll(() {
-    registerFallbackValue(Cart());
-  });
   setUp(() {
     authRepository = MockAuthRepository();
     remoteCartRepository = MockRemoteCartRepository();
     localCartRepository = MockLocalCartRepository();
   });
+
   CartService makeCartService() {
     final container = ProviderContainer(
       overrides: [
@@ -36,8 +39,8 @@ void main() {
     return container.read(cartServiceProvider);
   }
 
-  group('set item', () {
-    test('null user , write the item to local repo', () async {
+  group('setItem', () {
+    test('null user, writes item to local cart', () async {
       // setup
       const expectedCart = Cart({'123': 1});
       when(() => authRepository.currentUser).thenReturn(null);
@@ -56,11 +59,13 @@ void main() {
       verify(
         () => localCartRepository.setCart(expectedCart),
       ).called(1);
-      verifyNever(() => remoteCartRepository.setCart(any(), any()));
+      verifyNever(
+        () => remoteCartRepository.setCart(any(), any()),
+      );
     });
-    test('non-null user , write the item to remote repo', () async {
+
+    test('non-null user, writes item to remote cart', () async {
       // setup
-      
       const expectedCart = Cart({'123': 1});
       when(() => authRepository.currentUser).thenReturn(testUser);
       when(() => remoteCartRepository.fetchCart(testUser.uid)).thenAnswer(
@@ -79,34 +84,37 @@ void main() {
       verify(
         () => remoteCartRepository.setCart(testUser.uid, expectedCart),
       ).called(1);
-      verifyNever(() => localCartRepository.setCart(any()));
+      verifyNever(
+        () => localCartRepository.setCart(any()),
+      );
     });
   });
 
-  group('add item', () {
-    test('null user , adds the item to local repo', () async {
+  group('addItem', () {
+    test('null user, adds item to local cart', () async {
       // setup
       const initialCart = Cart({'123': 2});
       const expectedCart = Cart({'123': 3});
-      when(() => authRepository.currentUser).thenReturn(null);
+      when(() => authRepository.currentUser).thenReturn(null); // null user
       when(localCartRepository.fetchCart).thenAnswer(
-        (_) => Future.value(initialCart),
+        (_) => Future.value(initialCart), // empty cart
       );
       when(() => localCartRepository.setCart(expectedCart)).thenAnswer(
         (_) => Future.value(),
       );
       final cartService = makeCartService();
       // run
-      await cartService.addItem(
-        const Item(productId: '123', quantity: 1),
-      );
+      await cartService.addItem(const Item(productId: '123', quantity: 1));
       // verify
       verify(
         () => localCartRepository.setCart(expectedCart),
       ).called(1);
-      verifyNever(() => remoteCartRepository.setCart(any(), any()));
+      verifyNever(
+        () => remoteCartRepository.setCart(any(), any()),
+      );
     });
-    test('non-null user , adds the item to remote repo', () async {
+
+    test('non-null user, adds item to remote cart', () async {
       // setup
       const initialCart = Cart({'123': 2});
       const expectedCart = Cart({'123': 3});
@@ -130,6 +138,7 @@ void main() {
       ).called(1);
     });
   });
+
   group('removeItem', () {
     test('null user, removes item from local cart', () async {
       // setup
@@ -178,5 +187,4 @@ void main() {
       ).called(1);
     });
   });
-
 }

@@ -17,7 +17,7 @@ main() {
     await r.golden.setSurfaceSize(currentSize);
     await r.golden.loadRobotoFont();
     await r.golden.loadMaterialIconFont();
-    await r.pumpMyaApp();
+    await r.pumpMyApp();
     await r.golden.precacheImages();
     final finder = find.byType(MyApp);
     await expectLater(

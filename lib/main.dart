@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:ecommerce_app/src/app.dart';
+import 'package:ecommerce_app/src/features/cart/application/cart_sync_service.dart';
 import 'package:ecommerce_app/src/features/cart/data/local/local_cart_repository.dart';
 import 'package:ecommerce_app/src/features/cart/data/local/sembast_cart_repository.dart';
 import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
@@ -13,13 +14,15 @@ void main() async {
   // turn off the # in the URLs on the web
   usePathUrlStrategy();
   // * Register error handlers. For more info, see:
-  // * https://docs.flutter.dev/testing/errors 
+  // * https://docs.flutter.dev/testing/errors
   registerErrorHandlers();
   // * Entry point of the app
   final localDatabase = await SembastCartRepository.makeItDefault();
-  runApp(ProviderScope(
-      overrides: [localCartRepositoryProvider.overrideWithValue(localDatabase)],
-      child: MyApp()));
+  final container = ProviderContainer(
+    overrides: [localCartRepositoryProvider.overrideWithValue(localDatabase)],
+  );
+  container.read(cartSyncServiceProvider);
+  runApp(UncontrolledProviderScope(container: container, child: MyApp()));
 }
 
 void registerErrorHandlers() {

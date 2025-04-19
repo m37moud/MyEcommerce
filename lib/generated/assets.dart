@@ -4,8 +4,12 @@ class Assets {
 
   static const String accountAccountScreen = 'lib/src/features/authentication/presentation/account/account_screen.dart';
   static const String accountAccountScreenController = 'lib/src/features/authentication/presentation/account/account_screen_controller.dart';
+  static const String addToCartAddToCartController = 'lib/src/features/cart/presentation/add_to_cart/add_to_cart_controller.dart';
   static const String addToCartAddToCartWidget = 'lib/src/features/cart/presentation/add_to_cart/add_to_cart_widget.dart';
   static const String applicationCartService = 'lib/src/features/cart/application/cart_service.dart';
+  static const String applicationCartSyncService = 'lib/src/features/cart/application/cart_sync_service.dart';
+  static const String applicationFakeCheckoutService = 'lib/src/features/checkout/application/fake_checkout_service.dart';
+  static const String applicationUserOrdersProvider = 'lib/src/features/orders/application/user_orders_provider.dart';
   static const String assetsAppIcon = 'assets/app-icon.png';
   static const String assetsAppIconBackground = 'assets/app-icon-background.png';
   static const String assetsAppIconForeground = 'assets/app-icon-foreground.png';
@@ -29,6 +33,7 @@ class Assets {
   static const String constantsBreakpoints = 'lib/src/constants/breakpoints.dart';
   static const String constantsTestProducts = 'lib/src/constants/test_products.dart';
   static const String dataFakeAuthRepository = 'lib/src/features/authentication/data/fake_auth_repository.dart';
+  static const String dataFakeOrdersRepository = 'lib/src/features/orders/data/fake_orders_repository.dart';
   static const String dataFakeProductsRepository = 'lib/src/features/products/data/fake_products_repository.dart';
   static const String domainAddress = 'lib/src/features/address/domain/address.dart';
   static const String domainAppUser = 'lib/src/features/authentication/domain/app_user.dart';
@@ -57,6 +62,7 @@ class Assets {
   static const String ordersListOrderStatusLabel = 'lib/src/features/orders/presentation/orders_list/order_status_label.dart';
   static const String ordersListOrdersListScreen = 'lib/src/features/orders/presentation/orders_list/orders_list_screen.dart';
   static const String paymentPaymentButton = 'lib/src/features/checkout/presentation/payment/payment_button.dart';
+  static const String paymentPaymentButtonController = 'lib/src/features/checkout/presentation/payment/payment_button_controller.dart';
   static const String paymentPaymentPage = 'lib/src/features/checkout/presentation/payment/payment_page.dart';
   static const String presentationAddressScreen = 'lib/src/features/address/presentation/address_screen.dart';
   static const String productReviewsProductRatingBar = 'lib/src/features/reviews/presentation/product_reviews/product_rating_bar.dart';
@@ -85,12 +91,16 @@ class Assets {
   static const String productsSnacksPlate = 'assets/products/snacks-plate.jpg';
   static const String remoteFakeRemoteCartRepository = 'lib/src/features/cart/data/remote/fake_remote_cart_repository.dart';
   static const String remoteRemoteCartRepository = 'lib/src/features/cart/data/remote/remote_cart_repository.dart';
+  static const String resAssetsRes = 'lib/res/assets_res.dart';
+  static const String resFontRes = 'lib/res/font_res.dart';
+  static const String resLibRes = 'lib/res/lib_res.dart';
   static const String routingAppRouter = 'lib/src/routing/app_router.dart';
   static const String routingGoRouterRefreshStream = 'lib/src/routing/go_router_refresh_stream.dart';
   static const String routingNotFoundScreen = 'lib/src/routing/not_found_screen.dart';
   static const String shoppingCartShoppingCartItem = 'lib/src/features/cart/presentation/shopping_cart/shopping_cart_item.dart';
   static const String shoppingCartShoppingCartItemsBuilder = 'lib/src/features/cart/presentation/shopping_cart/shopping_cart_items_builder.dart';
   static const String shoppingCartShoppingCartScreen = 'lib/src/features/cart/presentation/shopping_cart/shopping_cart_screen.dart';
+  static const String shoppingCartShoppingCartScreenController = 'lib/src/features/cart/presentation/shopping_cart/shopping_cart_screen_controller.dart';
   static const String signInEmailPasswordSignInController = 'lib/src/features/authentication/presentation/sign_in/email_password_sign_in_controller.dart';
   static const String signInEmailPasswordSignInScreen = 'lib/src/features/authentication/presentation/sign_in/email_password_sign_in_screen.dart';
   static const String signInEmailPasswordSignInState = 'lib/src/features/authentication/presentation/sign_in/email_password_sign_in_state.dart';

@@ -5,7 +5,7 @@ import '../../robot.dart';
 main() {
   testWidgets('auth flow test', (tester) async {
     final r = Robot(tester);
-    await r.pumpMyaApp();
+    await r.pumpMyApp();
     r.expectFindAllProduct();
     await r.openPopUpMenu();
     await r.authRobot.openSignInScreen();

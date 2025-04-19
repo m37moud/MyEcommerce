@@ -1,6 +1,4 @@
-import 'package:ecommerce_app/src/features/authentication/data/fake_auth_repository.dart';
 import 'package:ecommerce_app/src/features/cart/application/cart_service.dart';
-import 'package:ecommerce_app/src/features/cart/domain/cart.dart';
 import 'package:ecommerce_app/src/features/cart/domain/item.dart';
 import 'package:ecommerce_app/src/features/products/domain/product.dart';
 import 'package:riverpod/riverpod.dart';
