@@ -26,6 +26,7 @@ dependencies:
   sembast: 3.7.5
   sembast_web: 2.4.0
   path_provider: 2.1.5
+  freezed_annotation: ^2.4.4
   
 dev_dependencies:
   flutter_test:
@@ -34,10 +35,11 @@ dev_dependencies:
     sdk: flutter    
   flutter_lints: 5.0.0
   mocktail: ^1.0.4
-  build_runner: 2.4.13
+  build_runner: ^2.4.15
   riverpod_generator: 2.6.2
   custom_lint: 0.7.0
   riverpod_lint: 2.6.2
+  freezed: ^2.5.7
 
 # Custom app icon. For more info see: https://pub.dev/packages/flutter_launcher_icons
 flutter_icons:
@@ -57,11 +59,26 @@ flutter:
   generate: true
   
   fonts:
-    # Used for Golden Image tests
-    - family: Roboto
+    - family: Roboto-Regular
       fonts:
-        - asset: assets/fonts/Roboto-Regular.ttf  
+        - asset: assets/fonts/Roboto-Regular.ttf
 
   assets:
-    - assets/products/
-    - lib/src/features/authentication/data/
+    - assets/app-icon-background.png
+    - assets/app-icon-foreground.png
+    - assets/app-icon.png
+    - assets/fonts/LICENSE.txt
+    - assets/products/bruschetta-plate.jpg
+    - assets/products/flowers-plate.jpg
+    - assets/products/honey-pot.jpg
+    - assets/products/juicer-citrus-fruits.jpg
+    - assets/products/mozzarella-plate.jpg
+    - assets/products/pasta-plate.jpg
+    - assets/products/piggy-blue.jpg
+    - assets/products/piggy-green.jpg
+    - assets/products/piggy-pink.jpg
+    - assets/products/pizza-plate.jpg
+    - assets/products/plate-and-bowl.jpg
+    - assets/products/salt-pepper-lemon.jpg
+    - assets/products/salt-pepper-olives.jpg
+    - assets/products/snacks-plate.jpg

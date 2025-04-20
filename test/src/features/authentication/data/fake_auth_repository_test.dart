@@ -3,44 +3,73 @@ import 'package:ecommerce_app/src/features/authentication/domain/app_user.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  FakeAuthRepository createAuthRepo() => FakeAuthRepository(addDelay: false);
   const testEmail = 'test@test.com';
-  const testPass = '1234';
-  final testUser =
-      AppUser(uid: testEmail.split('').reversed.join(), email: testEmail);
-
+  const testPassword = 'test1234';
+  final testUser = AppUser(
+    uid: testEmail.split('').reversed.join(),
+    email: testEmail,
+  );
+  FakeAuthRepository makeAuthRepository() => FakeAuthRepository(
+    addDelay: false,
+  );
   group('FakeAuthRepository', () {
     test('currentUser is null', () {
-      final repo = createAuthRepo();
-      // tearDown(repo.dispose);
-      expect(repo.currentUser, null);
-      expect(repo.authStateChanges(), emits(null));
-    });
-    test('currentUser is not null after sign in', () async {
-      final repo = createAuthRepo();
-      // tearDown(repo.dispose);
-      await repo.signInWithEmailAndPassword(testEmail, testPass);
-      expect(repo.currentUser, testUser);
-      expect(repo.authStateChanges(), emits(testUser));
+      final authRepository = makeAuthRepository();
+      addTearDown(authRepository.dispose);
+      expect(authRepository.currentUser, null);
+      expect(authRepository.authStateChanges(), emits(null));
     });
 
-    test('currentUser is not null after regeneration', () async {
-      final repo = createAuthRepo();
-      // tearDown(repo.dispose);
-      await repo.createUserWithEmailAndPassword(testEmail, testPass);
-      expect(repo.currentUser, testUser);
-      expect(repo.authStateChanges(), emits(testUser));
+    test('sign in throws when user not found', () async {
+      final authRepository = makeAuthRepository();
+      addTearDown(authRepository.dispose);
+      await expectLater(
+            () => authRepository.signInWithEmailAndPassword(
+          testEmail,
+          testPassword,
+        ),
+        throwsA(isA<Exception>()),
+      );
+      expect(authRepository.currentUser, null);
+      expect(authRepository.authStateChanges(), emits(null));
+    });
+
+    test('currentUser is not null after registration', () async {
+      final authRepository = makeAuthRepository();
+      addTearDown(authRepository.dispose);
+      await authRepository.createUserWithEmailAndPassword(
+        testEmail,
+        testPassword,
+      );
+      expect(authRepository.currentUser, testUser);
+      expect(authRepository.authStateChanges(), emits(testUser));
     });
 
     test('currentUser is null after sign out', () async {
-      final repo = createAuthRepo();
-      // tearDown(repo.dispose);
-      await repo.signInWithEmailAndPassword(testEmail, testPass);
-      expect(repo.currentUser, testUser);
-      expect(repo.authStateChanges(), emits(testUser));
-      await repo.signOut();
-      expect(repo.currentUser, null);
-      expect(repo.authStateChanges(), emits(null));
+      final authRepository = makeAuthRepository();
+      addTearDown(authRepository.dispose);
+      await authRepository.createUserWithEmailAndPassword(
+        testEmail,
+        testPassword,
+      );
+      expect(authRepository.currentUser, testUser);
+      expect(authRepository.authStateChanges(), emits(testUser));
+
+      await authRepository.signOut();
+      expect(authRepository.currentUser, null);
+      expect(authRepository.authStateChanges(), emits(null));
+    });
+
+    test('create user after dispose throws exception', () {
+      final authRepository = makeAuthRepository();
+      authRepository.dispose();
+      expect(
+            () => authRepository.createUserWithEmailAndPassword(
+          testEmail,
+          testPassword,
+        ),
+        throwsStateError,
+      );
     });
   });
 }

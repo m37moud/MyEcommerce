@@ -13,6 +13,9 @@ class EmailPasswordSignInController
   Future<bool> submit(String email, String password) async {
     state = state.copyWith(value: const AsyncValue.loading());
     final value = await AsyncValue.guard(() => _authenticate(email, password));
+    if(value is AsyncError){
+      //TODO: errorLogger.log(value)
+    }
     state = state.copyWith(value: value);
     return value.hasError == false;
   }
