@@ -25,32 +25,56 @@ class Product {
   final int numRatings;
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Product &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          imageUrl == other.imageUrl &&
-          title == other.title &&
-          description == other.description &&
-          price == other.price &&
-          availableQuantity == other.availableQuantity &&
-          avgRating == other.avgRating &&
-          numRatings == other.numRatings;
-
-  @override
-  int get hashCode =>
-      id.hashCode ^
-      imageUrl.hashCode ^
-      title.hashCode ^
-      description.hashCode ^
-      price.hashCode ^
-      availableQuantity.hashCode ^
-      avgRating.hashCode ^
-      numRatings.hashCode;
-
-  @override
   String toString() {
-    return 'Product{id: $id, imageUrl: $imageUrl, title: $title, description: $description, price: $price, availableQuantity: $availableQuantity, avgRating: $avgRating, numRatings: $numRatings}';
+    return 'Product(id: $id, imageUrl: $imageUrl, title: $title, description: $description, price: $price, availableQuantity: $availableQuantity, avgRating: $avgRating, numRatings: $numRatings)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Product &&
+        other.id == id &&
+        other.imageUrl == imageUrl &&
+        other.title == title &&
+        other.description == description &&
+        other.price == price &&
+        other.availableQuantity == availableQuantity &&
+        other.avgRating == avgRating &&
+        other.numRatings == numRatings;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+        imageUrl.hashCode ^
+        title.hashCode ^
+        description.hashCode ^
+        price.hashCode ^
+        availableQuantity.hashCode ^
+        avgRating.hashCode ^
+        numRatings.hashCode;
+  }
+
+  Product copyWith({
+    ProductID? id,
+    String? imageUrl,
+    String? title,
+    String? description,
+    double? price,
+    int? availableQuantity,
+    double? avgRating,
+    int? numRatings,
+  }) {
+    return Product(
+      id: id ?? this.id,
+      imageUrl: imageUrl ?? this.imageUrl,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      price: price ?? this.price,
+      availableQuantity: availableQuantity ?? this.availableQuantity,
+      avgRating: avgRating ?? this.avgRating,
+      numRatings: numRatings ?? this.numRatings,
+    );
   }
 }

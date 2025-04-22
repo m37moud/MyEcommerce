@@ -19,33 +19,30 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// Shows the product page for a given product ID.
 class ProductScreen extends StatelessWidget {
   const ProductScreen({super.key, required this.productId});
-
-  final String productId;
+  final ProductID productId;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const HomeAppBar(),
       body: Consumer(
-        builder: (context, ref, child) {
-          final productValue = ref.watch(productStreamProvider(productId));
+        builder: (context, ref, _) {
+          final productValue = ref.watch(productProvider(productId));
           return AsyncValueWidget<Product?>(
             value: productValue,
-            data: (product) {
-              return product == null
-                  ? EmptyPlaceholderWidget(
-                      message: 'Product not found'.hardcoded,
-                    )
-                  : CustomScrollView(
-                      slivers: [
-                        ResponsiveSliverCenter(
-                          padding: const EdgeInsets.all(Sizes.p16),
-                          child: ProductDetails(product: product),
-                        ),
-                        ProductReviewsList(productId: productId),
-                      ],
-                    );
-            },
+            data: (product) => product == null
+                ? EmptyPlaceholderWidget(
+                    message: 'Product not found'.hardcoded,
+                  )
+                : CustomScrollView(
+                    slivers: [
+                      ResponsiveSliverCenter(
+                        padding: const EdgeInsets.all(Sizes.p16),
+                        child: ProductDetails(product: product),
+                      ),
+                      ProductReviewsList(productId: productId),
+                    ],
+                  ),
           );
         },
       ),
@@ -56,14 +53,14 @@ class ProductScreen extends StatelessWidget {
 /// Shows all the product details along with actions to:
 /// - leave a review
 /// - add to cart
-class ProductDetails extends StatelessWidget {
+class ProductDetails extends ConsumerWidget {
   const ProductDetails({super.key, required this.product});
-
   final Product product;
 
   @override
-  Widget build(BuildContext context) {
-    final priceFormatted = kCurrencyFormatter.format(product.price);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final priceFormatted =
+        ref.watch(currencyFormatterProvider).format(product.price);
     return ResponsiveTwoColumnLayout(
       startContent: Card(
         child: Padding(

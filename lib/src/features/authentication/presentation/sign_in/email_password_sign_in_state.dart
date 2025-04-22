@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:ecommerce_app/src/features/authentication/presentation/sign_in/string_validators.dart';
@@ -20,16 +19,13 @@ mixin EmailAndPasswordValidators {
 class EmailPasswordSignInState with EmailAndPasswordValidators {
   EmailPasswordSignInState({
     this.formType = EmailPasswordSignInFormType.signIn,
-    this.value = const AsyncValue<void>.data(null),
+    this.value = const AsyncValue.data(null),
   });
 
   final EmailPasswordSignInFormType formType;
   final AsyncValue<void> value;
 
-  get isLoading => value.isLoading;
-  
-
-
+  bool get isLoading => value.isLoading;
 
   EmailPasswordSignInState copyWith({
     EmailPasswordSignInFormType? formType,
@@ -42,15 +38,16 @@ class EmailPasswordSignInState with EmailAndPasswordValidators {
   }
 
   @override
-  String toString() => 'EmailPasswordSignInState(formType: $formType, value: $value)';
+  String toString() =>
+      'EmailPasswordSignInState(formType: $formType, value: $value)';
 
   @override
-  bool operator ==(covariant EmailPasswordSignInState other) {
+  bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.formType == formType &&
-      other.value == value;
+
+    return other is EmailPasswordSignInState &&
+        other.formType == formType &&
+        other.value == value;
   }
 
   @override

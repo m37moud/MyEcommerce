@@ -1,20 +1,17 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 /// Simple class representing the user UID and email.
 class AppUser {
   const AppUser({
     required this.uid,
-    this.email,
+    required this.email,
   });
   final String uid;
-  final String? email;
+  final String email;
 
   @override
-  bool operator ==(covariant AppUser other) {
+  bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.uid == uid &&
-      other.email == email;
+
+    return other is AppUser && other.uid == uid && other.email == email;
   }
 
   @override

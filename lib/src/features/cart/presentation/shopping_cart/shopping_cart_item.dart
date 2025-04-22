@@ -1,18 +1,18 @@
 import 'dart:math';
 
 import 'package:ecommerce_app/src/common_widgets/async_value_widget.dart';
+import 'package:ecommerce_app/src/features/cart/presentation/shopping_cart/shopping_cart_screen_controller.dart';
+import 'package:ecommerce_app/src/features/products/data/fake_products_repository.dart';
+import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
+import 'package:ecommerce_app/src/utils/currency_formatter.dart';
+import 'package:flutter/material.dart';
 import 'package:ecommerce_app/src/common_widgets/custom_image.dart';
 import 'package:ecommerce_app/src/common_widgets/item_quantity_selector.dart';
 import 'package:ecommerce_app/src/common_widgets/responsive_two_column_layout.dart';
 import 'package:ecommerce_app/src/constants/app_sizes.dart';
 import 'package:ecommerce_app/src/features/cart/domain/item.dart';
-import 'package:ecommerce_app/src/features/cart/presentation/shopping_cart/shopping_cart_screen_controller.dart';
-import 'package:ecommerce_app/src/features/products/data/fake_products_repository.dart';
 import 'package:ecommerce_app/src/features/products/domain/product.dart';
-import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 /// Shows a shopping cart item (or loading/error UI if needed)
 class ShoppingCartItem extends ConsumerWidget {
@@ -22,7 +22,6 @@ class ShoppingCartItem extends ConsumerWidget {
     required this.itemIndex,
     this.isEditable = true,
   });
-
   final Item item;
   final int itemIndex;
 
@@ -33,7 +32,7 @@ class ShoppingCartItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final productValue = ref.watch(productStreamProvider(item.productId));
+    final productValue = ref.watch(productProvider(item.productId));
     return AsyncValueWidget<Product?>(
       value: productValue,
       data: (product) => Padding(
@@ -63,7 +62,6 @@ class ShoppingCartItemContents extends ConsumerWidget {
     required this.itemIndex,
     required this.isEditable,
   });
-
   final Product product;
   final Item item;
   final int itemIndex;
@@ -74,9 +72,8 @@ class ShoppingCartItemContents extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // TODO: error handling
-    // TODO: Inject formatter
-    final priceFormatted = NumberFormat.simpleCurrency().format(product.price);
+    final priceFormatted =
+        ref.watch(currencyFormatterProvider).format(product.price);
     return ResponsiveTwoColumnLayout(
       startFlex: 1,
       endFlex: 2,
@@ -120,7 +117,6 @@ class EditOrRemoveItemWidget extends ConsumerWidget {
     required this.item,
     required this.itemIndex,
   });
-
   final Product product;
   final Item item;
   final int itemIndex;
@@ -130,7 +126,7 @@ class EditOrRemoveItemWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(shoppingControllerProvider);
+    final state = ref.watch(shoppingCartScreenControllerProvider);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -141,7 +137,7 @@ class EditOrRemoveItemWidget extends ConsumerWidget {
           onChanged: state.isLoading
               ? null
               : (quantity) => ref
-                  .read(shoppingControllerProvider.notifier)
+                  .read(shoppingCartScreenControllerProvider.notifier)
                   .updateItemQuantity(item.productId, quantity),
         ),
         IconButton(
@@ -150,7 +146,7 @@ class EditOrRemoveItemWidget extends ConsumerWidget {
           onPressed: state.isLoading
               ? null
               : () => ref
-                  .read(shoppingControllerProvider.notifier)
+                  .read(shoppingCartScreenControllerProvider.notifier)
                   .removeItemById(item.productId),
         ),
         const Spacer(),

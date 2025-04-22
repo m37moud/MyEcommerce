@@ -11,13 +11,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// Shows an individual order item, including price and quantity.
 class OrderItemListTile extends ConsumerWidget {
   const OrderItemListTile({super.key, required this.item});
-
   final Item item;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final productValue = ref.watch(productStreamProvider(item.productId));
-
+    final productValue = ref.watch(productProvider(item.productId));
     return AsyncValueWidget<Product?>(
       value: productValue,
       data: (product) => Padding(

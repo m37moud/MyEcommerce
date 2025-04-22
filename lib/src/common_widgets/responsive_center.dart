@@ -19,7 +19,6 @@ class ResponsiveCenter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('maxContentWidth: $maxContentWidth');
     // Use Center as it has *unconstrained* width (loose constraints)
     return Center(
       // together with SizedBox to specify the max width (tight constraints)

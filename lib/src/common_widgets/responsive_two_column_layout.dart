@@ -8,7 +8,7 @@ class ResponsiveTwoColumnLayout extends StatelessWidget {
     super.key,
     required this.startContent,
     required this.endContent,
-    this.startFlex =1,
+    this.startFlex = 1,
     this.endFlex = 1,
     this.breakpoint = Breakpoint.tablet,
     required this.spacing,

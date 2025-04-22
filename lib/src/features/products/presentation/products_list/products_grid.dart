@@ -18,10 +18,9 @@ class ProductsGrid extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final productListValue = ref.watch(productListFutureProvider);
-
+    final productsListValue = ref.watch(productsListStreamProvider);
     return AsyncValueWidget<List<Product>>(
-      value: productListValue,
+      value: productsListValue,
       data: (products) => products.isEmpty
           ? Center(
               child: Text(
@@ -65,11 +64,10 @@ class ProductsLayoutGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     // use a LayoutBuilder to determine the crossAxisCount
     return LayoutBuilder(builder: (context, constraints) {
-      final width = constraints.maxWidth; // width of the screen
-      debugPrint('width: $width');
+      final width = constraints.maxWidth;
       // 1 column for width < 500px
       // then add one more column for each 250px
-      final crossAxisCount = max(1, width ~/ 250);// number of columns
+      final crossAxisCount = max(1, width ~/ 250);
       // once the crossAxisCount is known, calculate the column and row sizes
       // set some flexible track sizes based on the crossAxisCount with 1.fr
       final columnSizes = List.generate(crossAxisCount, (_) => 1.fr);
@@ -80,10 +78,8 @@ class ProductsLayoutGrid extends StatelessWidget {
       return LayoutGrid(
         columnSizes: columnSizes,
         rowSizes: rowSizes,
-        rowGap: Sizes.p24,
-        // equivalent to mainAxisSpacing
-        columnGap: Sizes.p24,
-        // equivalent to crossAxisSpacing
+        rowGap: Sizes.p24, // equivalent to mainAxisSpacing
+        columnGap: Sizes.p24, // equivalent to crossAxisSpacing
         children: [
           // render all the items with automatic child placement
           for (var i = 0; i < itemCount; i++) itemBuilder(context, i),

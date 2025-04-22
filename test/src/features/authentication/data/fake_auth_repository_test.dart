@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/src/exceptions/app_exception.dart';
 import 'package:ecommerce_app/src/features/authentication/data/fake_auth_repository.dart';
 import 'package:ecommerce_app/src/features/authentication/domain/app_user.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,8 +11,8 @@ void main() {
     email: testEmail,
   );
   FakeAuthRepository makeAuthRepository() => FakeAuthRepository(
-    addDelay: false,
-  );
+        addDelay: false,
+      );
   group('FakeAuthRepository', () {
     test('currentUser is null', () {
       final authRepository = makeAuthRepository();
@@ -24,11 +25,11 @@ void main() {
       final authRepository = makeAuthRepository();
       addTearDown(authRepository.dispose);
       await expectLater(
-            () => authRepository.signInWithEmailAndPassword(
+        () => authRepository.signInWithEmailAndPassword(
           testEmail,
           testPassword,
         ),
-        throwsA(isA<Exception>()),
+        throwsA(const AppException.userNotFound()),
       );
       expect(authRepository.currentUser, null);
       expect(authRepository.authStateChanges(), emits(null));
@@ -64,7 +65,7 @@ void main() {
       final authRepository = makeAuthRepository();
       authRepository.dispose();
       expect(
-            () => authRepository.createUserWithEmailAndPassword(
+        () => authRepository.createUserWithEmailAndPassword(
           testEmail,
           testPassword,
         ),

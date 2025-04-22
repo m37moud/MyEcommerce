@@ -11,7 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../mock.dart';
+import '../../../mocks.dart';
 
 void main() {
   late MockAuthRepository authRepository;
@@ -47,7 +47,7 @@ void main() {
       when(authRepository.authStateChanges).thenAnswer(
         (_) => Stream.value(const AppUser(uid: uid, email: 'test@test.com')),
       );
-      when(productsRepository.fetchProductList)
+      when(productsRepository.fetchProductsList)
           .thenAnswer((_) => Future.value(kTestProducts));
       when(localCartRepository.fetchCart)
           .thenAnswer((_) => Future.value(Cart(localCartItems)));

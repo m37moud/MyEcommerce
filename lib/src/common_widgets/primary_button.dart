@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/src/constants/app_sizes.dart';
 
-
-const kPrimaryButtonKey = Key('Primary-Button-key');
 /// Primary button based on [ElevatedButton].
 /// Useful for CTAs in the app.
 /// @param text - text to display on the button.
@@ -20,7 +18,6 @@ class PrimaryButton extends StatelessWidget {
     return SizedBox(
       height: Sizes.p48,
       child: ElevatedButton(
-        key: kPrimaryButtonKey,
         onPressed: onPressed,
         child: isLoading
             ? const CircularProgressIndicator()
@@ -29,7 +26,7 @@ class PrimaryButton extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: Theme.of(context)
                     .textTheme
-                    .titleMedium!
+                    .headlineMedium!
                     .copyWith(color: Colors.white),
               ),
       ),

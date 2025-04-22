@@ -1,7 +1,6 @@
 import 'package:ecommerce_app/src/exceptions/app_exception.dart';
 import 'package:ecommerce_app/src/exceptions/error_logger.dart';
 import 'package:ecommerce_app/src/features/authentication/presentation/sign_in/email_password_sign_in_state.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Error logger class to keep track of all AsyncError states that are set
@@ -18,11 +17,11 @@ class AsyncErrorLogger extends ProviderObserver {
     final error = _findError(newValue);
     if (error != null) {
       if (error.error is AppException) {
+        // only prints the AppException data
         errorLogger.logAppException(error.error as AppException);
-
-        // debugPrint(error.error.toString());
       } else {
-        errorLogger.log(error.error, error.stackTrace);
+        // prints everything including the stack trace
+        errorLogger.logError(error.error, error.stackTrace);
       }
     }
   }

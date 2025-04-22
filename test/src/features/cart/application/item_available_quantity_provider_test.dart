@@ -10,7 +10,7 @@ void main() {
       required Stream<Cart> cart,
     }) {
       final container = ProviderContainer(overrides: [
-        cartStreamProvider.overrideWith((ref) => cart),
+        cartProvider.overrideWith((ref) => cart),
       ]);
       addTearDown(container.dispose);
       return container;
@@ -29,7 +29,7 @@ void main() {
       final container = makeProviderContainer(
         cart: Stream.value(const Cart()),
       );
-      await container.read(cartStreamProvider.future);
+      await container.read(cartProvider.future);
       final availableQuantity =
           container.read(itemAvailableQuantityProvider(kTestProducts[0]));
       expect(availableQuantity, 5);
@@ -39,7 +39,7 @@ void main() {
       final container = makeProviderContainer(
         cart: Stream.value(const Cart({'1': 1})),
       );
-      await container.read(cartStreamProvider.future);
+      await container.read(cartProvider.future);
       final availableQuantity =
           container.read(itemAvailableQuantityProvider(kTestProducts[0]));
       expect(availableQuantity, 4);
@@ -49,7 +49,7 @@ void main() {
       final container = makeProviderContainer(
         cart: Stream.value(const Cart({'1': 5})),
       );
-      await container.read(cartStreamProvider.future);
+      await container.read(cartProvider.future);
       final availableQuantity =
           container.read(itemAvailableQuantityProvider(kTestProducts[0]));
       expect(availableQuantity, 0);
@@ -59,7 +59,7 @@ void main() {
       final container = makeProviderContainer(
         cart: Stream.value(const Cart({'1': 10})),
       );
-      await container.read(cartStreamProvider.future);
+      await container.read(cartProvider.future);
       final availableQuantity =
           container.read(itemAvailableQuantityProvider(kTestProducts[0]));
       expect(availableQuantity, 0);

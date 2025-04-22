@@ -2,65 +2,82 @@ import 'dart:math';
 
 import 'package:ecommerce_app/src/exceptions/error_logger.dart';
 import 'package:ecommerce_app/src/features/authentication/data/fake_auth_repository.dart';
+import 'package:ecommerce_app/src/features/authentication/domain/app_user.dart';
 import 'package:ecommerce_app/src/features/cart/data/local/local_cart_repository.dart';
 import 'package:ecommerce_app/src/features/cart/data/remote/remote_cart_repository.dart';
 import 'package:ecommerce_app/src/features/cart/domain/cart.dart';
 import 'package:ecommerce_app/src/features/cart/domain/item.dart';
 import 'package:ecommerce_app/src/features/cart/domain/mutable_cart.dart';
 import 'package:ecommerce_app/src/features/products/data/fake_products_repository.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CartSyncService {
   CartSyncService(this.ref) {
     _init();
   }
-
   final Ref ref;
 
   void _init() {
-    ref.listen(authStateChangesProvider, (previous, next) {
+    ref.listen<AsyncValue<AppUser?>>(authStateChangesProvider,
+        (previous, next) {
       final previousUser = previous?.value;
-      final nextUser = next.value;
-      if (previousUser == null && nextUser != null) {
-        _addLocalCartToRemote(nextUser.uid);
+      final user = next.value;
+      if (previousUser == null && user != null) {
+        _moveItemsToRemoteCart(user.uid);
       }
     });
   }
 
-  Future<void> _addLocalCartToRemote(String uid) async {
+  /// moves all items from the local to the remote cart taking into account the
+  /// available quantities
+  Future<void> _moveItemsToRemoteCart(String uid) async {
     try {
-      final localRepo = ref.read(localCartRepositoryProvider);
-      final localCart = await localRepo.fetchCart();
+      // Get the local cart data
+      final localCartRepository = ref.read(localCartRepositoryProvider);
+      final localCart = await localCartRepository.fetchCart();
       if (localCart.items.isNotEmpty) {
-        final remoteRpo = ref.read(remoteCartRepositoryProvider);
-        final remoteCart = await remoteRpo.fetchCart(uid);
-        final localItemToAdd = await _addLocalItem(localCart, remoteCart);
-        final updatedRemoteCart = remoteCart.addItems(localItemToAdd);
-        await remoteRpo.setCart(uid, updatedRemoteCart);
-        await localRepo.setCart(const Cart());
+        // Get the remote cart data
+        final remoteCartRepository = ref.read(remoteCartRepositoryProvider);
+        final remoteCart = await remoteCartRepository.fetchCart(uid);
+        final localItemsToAdd =
+            await _getLocalItemsToAdd(localCart, remoteCart);
+        // Add all the local items to the remote cart
+        final updatedRemoteCart = remoteCart.addItems(localItemsToAdd);
+        // Write the updated remote cart data to the repository
+        await remoteCartRepository.setCart(uid, updatedRemoteCart);
+        // Remove all items from the local cart
+        await localCartRepository.setCart(const Cart());
       }
-    } catch (e,st) {
-     ref.read(errorLoggerProvider).log(e, st);
+    } catch (e, st) {
+      ref.read(errorLoggerProvider).logError(e, st);
     }
   }
 
-  Future<List<Item>> _addLocalItem(Cart localCart, Cart remoteCart) async {
-    final productRepo = ref.read(productsRepositoryProvider);
-    final products = await productRepo.fetchProductList();
-    final localItems = <Item>[];
-    for (var item in localCart.items.entries) {
-      final productId = item.key;
-      final localQuantity = item.value;
+  Future<List<Item>> _getLocalItemsToAdd(
+      Cart localCart, Cart remoteCart) async {
+    // Get the list of products (needed to read the available quantities)
+    final productsRepository = ref.read(productsRepositoryProvider);
+    final products = await productsRepository.fetchProductsList();
+    // Figure out which items need to be added
+    final localItemsToAdd = <Item>[];
+    for (final localItem in localCart.items.entries) {
+      final productId = localItem.key;
+      final localQuantity = localItem.value;
+      // get the quantity for the corresponding item in the remote cart
       final remoteQuantity = remoteCart.items[productId] ?? 0;
-      final product = products.firstWhere((p) => p.id == productId);
-      final capQuantity =
-          min(localQuantity, product.availableQuantity - remoteQuantity);
-      if (capQuantity > 0) {
-        localItems.add(Item(productId: productId, quantity: capQuantity));
+      final product = products.firstWhere((product) => product.id == productId);
+      // Cap the quantity of each item to the available quantity
+      final cappedLocalQuantity = min(
+        localQuantity,
+        product.availableQuantity - remoteQuantity,
+      );
+      // if the capped quantity is > 0, add to the list of items to add
+      if (cappedLocalQuantity > 0) {
+        localItemsToAdd
+            .add(Item(productId: productId, quantity: cappedLocalQuantity));
       }
     }
-    return localItems;
+    return localItemsToAdd;
   }
 }
 

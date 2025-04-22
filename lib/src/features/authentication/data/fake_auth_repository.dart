@@ -7,12 +7,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FakeAuthRepository {
   FakeAuthRepository({this.addDelay = true});
-
   final bool addDelay;
   final _authState = InMemoryStore<AppUser?>(null);
 
   Stream<AppUser?> authStateChanges() => _authState.stream;
-
   AppUser? get currentUser => _authState.value;
 
   // List to keep track of all user accounts
@@ -29,10 +27,10 @@ class FakeAuthRepository {
       }
       // same email, wrong password
       if (u.email == email && u.password != password) {
-        throw AppException.wrongPassword();
+        throw const AppException.wrongPassword();
       }
     }
-    throw AppException.userNotFound();
+    throw const AppException.userNotFound();
   }
 
   Future<void> createUserWithEmailAndPassword(
@@ -41,12 +39,12 @@ class FakeAuthRepository {
     // check if the email is already in use
     for (final u in _users) {
       if (u.email == email) {
-        throw AppException.emailAlreadyInUse();
+        throw const AppException.emailAlreadyInUse();
       }
     }
     // minimum password length requirement
     if (password.length < 8) {
-      throw AppException.weakPassword();
+      throw const AppException.userNotFound();
     }
     // create new user
     _createNewUser(email, password);
@@ -78,7 +76,7 @@ final authRepositoryProvider = Provider<FakeAuthRepository>((ref) {
   return auth;
 });
 
-final authStateChangesProvider = StreamProvider.autoDispose<AppUser?>((ref) {
+final authStateChangesProvider = StreamProvider<AppUser?>((ref) {
   final authRepository = ref.watch(authRepositoryProvider);
   return authRepository.authStateChanges();
 });

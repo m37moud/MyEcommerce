@@ -19,8 +19,6 @@ class _ProductsSearchTextFieldState extends State<ProductsSearchTextField> {
     _controller.dispose();
     super.dispose();
   }
-  
-  
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +31,7 @@ class _ProductsSearchTextFieldState extends State<ProductsSearchTextField> {
         return TextField(
           controller: _controller,
           autofocus: false,
-          style: Theme.of(context).textTheme.headlineSmall,
+          style: Theme.of(context).textTheme.headlineMedium,
           decoration: InputDecoration(
             hintText: 'Search products'.hardcoded,
             icon: const Icon(Icons.search),

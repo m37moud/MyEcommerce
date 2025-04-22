@@ -8,6 +8,7 @@ import 'package:ecommerce_app/src/features/orders/presentation/orders_list/order
 import 'package:ecommerce_app/src/features/products/presentation/product_screen/product_screen.dart';
 import 'package:ecommerce_app/src/features/products/presentation/products_list/products_list_screen.dart';
 import 'package:ecommerce_app/src/features/reviews/presentation/leave_review_screen/leave_review_screen.dart';
+import 'package:ecommerce_app/src/routing/go_router_refresh_stream.dart';
 import 'package:ecommerce_app/src/routing/not_found_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,32 +26,24 @@ enum AppRoute {
 }
 
 final goRouterProvider = Provider<GoRouter>((ref) {
-  final authRepo = ref.watch(authRepositoryProvider);
+  final authRepository = ref.watch(authRepositoryProvider);
   return GoRouter(
     initialLocation: '/',
-    debugLogDiagnostics: true,
+    debugLogDiagnostics: false,
     redirect: (context, state) {
-      final isLoggedIn = authRepo.currentUser != null;
-   debugPrint(
-            'isLoggedIn $isLoggedIn matchedLocation is ${state.matchedLocation}');
-
+      final isLoggedIn = authRepository.currentUser != null;
       if (isLoggedIn) {
-     
         if (state.matchedLocation == '/signIn') {
-          debugPrint('isLoggedIn $isLoggedIn redirect to home');
-
           return '/';
         }
       } else {
-        if (state.matchedLocation == '/account' ||
-            state.matchedLocation == '/orders') {
-          debugPrint('isLoggedIn $isLoggedIn redirect to home');
+        if (state.matchedLocation == '/account' || state.matchedLocation == '/orders') {
           return '/';
         }
       }
       return null;
     },
-  // refreshListenable: GoRouterRefreshStream(authRepo.authStateChanges()),
+    refreshListenable: GoRouterRefreshStream(authRepository.authStateChanges()),
     routes: [
       GoRoute(
         path: '/',
@@ -89,16 +82,14 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             ),
             routes: [
               GoRoute(
-                  path: 'checkout',
-                  name: AppRoute.checkout.name,
-                  pageBuilder: (context, state) {
-                    debugPrint('pageKey = ${state.matchedLocation}');
-                    return MaterialPage(
-                      key: ValueKey(state.matchedLocation),
-                      fullscreenDialog: true,
-                      child: const CheckoutScreen(),
-                    );
-                  }),
+                path: 'checkout',
+                name: AppRoute.checkout.name,
+                pageBuilder: (context, state) => MaterialPage(
+                  key: ValueKey(state.matchedLocation),
+                  fullscreenDialog: true,
+                  child: const CheckoutScreen(),
+                ),
+              ),
             ],
           ),
           GoRoute(

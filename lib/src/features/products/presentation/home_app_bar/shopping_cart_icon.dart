@@ -14,10 +14,7 @@ class ShoppingCartIcon extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final state = ref.watch(cartStreamProvider);
-    // final cartItemsCount =
-    //     state.maybeWhen(data: (cart) => cart.items.length, orElse: () => 0);
-    final cartItemsCount = ref.watch(cartItemCountProvider);
+    final cartItemsCount = ref.watch(cartItemsCountProvider);
     return Stack(
       children: [
         Center(
@@ -41,7 +38,6 @@ class ShoppingCartIcon extends ConsumerWidget {
 /// Icon badge showing the items count
 class ShoppingCartIconBadge extends StatelessWidget {
   const ShoppingCartIconBadge({super.key, required this.itemsCount});
-
   final int itemsCount;
 
   @override
@@ -60,7 +56,7 @@ class ShoppingCartIconBadge extends StatelessWidget {
           // * Force textScaleFactor to 1.0 irrespective of the device's
           // * textScaleFactor. This is to prevent the text from growing bigger
           // * than the available space.
-          textScaler: const TextScaler.linear(1.0),
+          textScaleFactor: 1.0,
           style: Theme.of(context)
               .textTheme
               .bodySmall!

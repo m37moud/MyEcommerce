@@ -6,19 +6,19 @@ import '../test/src/robot.dart';
 main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Integration auth flow test', (tester) async {
+  testWidgets('Sign in and sign out flow', (tester) async {
     final r = Robot(tester);
     await r.pumpMyApp();
-    r.expectFindAllProduct();
-    await r.openPopUpMenu();
-    await r.authRobot.openSignInScreen();
-    await r.authRobot.signInWithEmailAndPassAndThenTapConfirm();
-    r.expectFindAllProduct();
-    await r.openPopUpMenu();
-    await r.authRobot.openAccountScreen();
-    await r.authRobot.clickLogoutButton();
-    r.authRobot.getConfirmDialog();
-    await r.authRobot.tapDialogLogoutButton();
-    r.expectFindAllProduct();
+    r.products.expectFindAllProductCards();
+    await r.openPopupMenu();
+    await r.auth.openEmailPasswordSignInScreen();
+    await r.auth.tapFormToggleButton();
+    await r.auth.enterAndSubmitEmailAndPassword();
+    r.products.expectFindAllProductCards();
+    await r.openPopupMenu();
+    await r.auth.openAccountScreen();
+    await r.auth.tapLogoutButton();
+    await r.auth.tapDialogLogoutButton();
+    r.products.expectFindAllProductCards();
   });
 }

@@ -1,7 +1,7 @@
 import 'package:ecommerce_app/src/features/cart/application/cart_service.dart';
 import 'package:ecommerce_app/src/features/cart/domain/item.dart';
 import 'package:ecommerce_app/src/features/products/domain/product.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AddToCartController extends StateNotifier<AsyncValue<int>> {
   AddToCartController({required this.cartService}) : super(const AsyncData(1));
@@ -24,9 +24,9 @@ class AddToCartController extends StateNotifier<AsyncValue<int>> {
 }
 
 final addToCartControllerProvider =
-    StateNotifierProvider.autoDispose<AddToCartController, AsyncValue<int>>((ref) {
-  final cartService = ref.watch(cartServiceProvider);
-  return AddToCartController(cartService: cartService);
+    StateNotifierProvider.autoDispose<AddToCartController, AsyncValue<int>>(
+        (ref) {
+  return AddToCartController(
+    cartService: ref.watch(cartServiceProvider),
+  );
 });
-
-

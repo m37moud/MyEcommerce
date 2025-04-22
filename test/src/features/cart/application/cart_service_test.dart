@@ -9,14 +9,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../mock.dart';
-
+import '../../../mocks.dart';
 
 void main() {
   setUpAll(() {
     registerFallbackValue(const Cart());
   });
-  const testUser = AppUser(uid: 'abc');
+  const testUser = AppUser(uid: 'abc', email: 'abc@test.com');
 
   late MockAuthRepository authRepository;
   late MockRemoteCartRepository remoteCartRepository;

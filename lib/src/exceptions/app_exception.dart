@@ -7,32 +7,22 @@ part 'app_exception.freezed.dart';
 class AppException with _$AppException {
   // Auth
   const factory AppException.emailAlreadyInUse() = EmailAlreadyInUse;
-
   const factory AppException.weakPassword() = WeakPassword;
-
   const factory AppException.wrongPassword() = WrongPassword;
-
   const factory AppException.userNotFound() = UserNotFound;
-
   // Orders
   const factory AppException.parseOrderFailure(String status) =
-  ParseOrderFailure;
+      ParseOrderFailure;
 }
 
 class AppExceptionData {
+  AppExceptionData(this.code, this.message);
   final String code;
-
   final String message;
 
-  AppExceptionData(this.code, this.message);
-
   @override
-  String toString() {
-    return 'AppExceptionData{code: $code, message: $message}';
-  }
+  String toString() => 'AppExceptionData(code: $code, message: $message)';
 }
-
-
 
 extension AppExceptionDetails on AppException {
   AppExceptionData get details {

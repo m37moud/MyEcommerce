@@ -17,13 +17,13 @@ class AccountScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen<AsyncValue>(
       accountScreenControllerProvider,
-      (_, state) => state.showMessageDialogOnError(context),
+      (_, state) => state.showAlertDialogOnError(context),
     );
     final state = ref.watch(accountScreenControllerProvider);
     return Scaffold(
       appBar: AppBar(
         title: state.isLoading
-            ? Center(child: const CircularProgressIndicator())
+            ? const CircularProgressIndicator()
             : Text('Account'.hardcoded),
         actions: [
           ActionTextButton(
@@ -41,8 +41,6 @@ class AccountScreen extends ConsumerWidget {
                       ref
                           .read(accountScreenControllerProvider.notifier)
                           .signOut();
-                      if (!context.mounted) return;
-                      Navigator.of(context).pop();
                     }
                   },
           ),
@@ -62,7 +60,7 @@ class UserDataTable extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final style = Theme.of(context).textTheme.bodyMedium!;
+    final style = Theme.of(context).textTheme.titleMedium!;
     final user = ref.watch(authStateChangesProvider).value;
     return DataTable(
       columns: [

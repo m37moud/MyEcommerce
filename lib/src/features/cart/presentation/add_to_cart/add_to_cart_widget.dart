@@ -15,14 +15,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// to add the selected quantity of the item to the cart.
 class AddToCartWidget extends ConsumerWidget {
   const AddToCartWidget({super.key, required this.product});
-
   final Product product;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen<AsyncValue<int>>(addToCartControllerProvider,
-        (_, state) => state.showMessageDialogOnError(context));
-
+    ref.listen<AsyncValue<int>>(
+      addToCartControllerProvider,
+      (_, state) => state.showAlertDialogOnError(context),
+    );
     final availableQuantity = ref.watch(itemAvailableQuantityProvider(product));
     final state = ref.watch(addToCartControllerProvider);
     return Column(
@@ -40,11 +40,9 @@ class AddToCartWidget extends ConsumerWidget {
               maxQuantity: min(availableQuantity, 10),
               onChanged: state.isLoading
                   ? null
-                  : (quantity) {
-                      ref
-                          .read(addToCartControllerProvider.notifier)
-                          .updateQuantity(quantity);
-                    },
+                  : (quantity) => ref
+                      .read(addToCartControllerProvider.notifier)
+                      .updateQuantity(quantity),
             ),
           ],
         ),
@@ -53,6 +51,7 @@ class AddToCartWidget extends ConsumerWidget {
         gapH8,
         PrimaryButton(
           isLoading: state.isLoading,
+          // only enable the button if there is enough stock
           onPressed: availableQuantity > 0
               ? () => ref
                   .read(addToCartControllerProvider.notifier)

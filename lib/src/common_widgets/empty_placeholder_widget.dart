@@ -21,7 +21,7 @@ class EmptyPlaceholderWidget extends StatelessWidget {
           children: [
             Text(
               message,
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme.of(context).textTheme.headlineMedium,
               textAlign: TextAlign.center,
             ),
             gapH32,
